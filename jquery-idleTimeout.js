@@ -14,7 +14,8 @@
 			redirect_url: '/js_sandbox/',
 			click_reset: true,
 			alive_url: '/js_sandbox/',
-			logout_url: '/js_sandbox/'
+			logout_url: '/js_sandbox/',
+			showDialog: true
 		}
     
     //##############################
@@ -23,6 +24,9 @@
     var opts = $.extend(defaults, options);
     var liveTimeout, confTimeout, sessionTimeout;
     var modal = "<div id='modal_pop'><p>You are about to be signed out due to inactivity.</p></div>";
+	if(!opts.showDialog){
+		noconfirm = 0;
+	}
     //##############################
     //## Private Functions
     //##############################
@@ -43,15 +47,16 @@
     {
       
       confTimeout = setTimeout(redirect, opts.noconfirm);
-      $(modal).dialog({
-        buttons: {"Stay Logged In":  function(){
-          $(this).dialog('close');
-          stay_logged_in();
-        }},
-        modal: true,
-        title: 'Auto Logout'
-      });
-      
+      if(opts.showDialog){
+		$(modal).dialog({
+			buttons: {"Stay Logged In":  function(){
+			$(this).dialog('close');
+			stay_logged_in();
+			}},
+			modal: true,
+			title: 'Auto Logout'
+		});
+      }
     }
     
     var redirect = function()
